@@ -639,6 +639,7 @@ onAuthStateChanged(auth,async user=>{
     S.uid=user.uid;
     $('loginScreen').classList.add('hidden');
     $('app').classList.remove('hidden');
+    initPickers();
     $('userName').textContent=user.displayName?.split(' ')[0]||'';
     const av=$('userAvatar');
     if(user.photoURL){av.src=user.photoURL;av.style.display='block'}
@@ -1180,8 +1181,20 @@ function makeTimePicker(host,onChange){
   host.append(H.el,colon,M.el);
   return{get:()=>H.get()*60+M.get(),set:m=>{m=((m%1440)+1440)%1440;H.setValue(Math.floor(m/60));M.setValue(Math.round((m%60)/15)*15%60)}};
 }
-const pS=makeTimePicker($('pickStart'),updateDur),pE=makeTimePicker($('pickEnd'),updateDur);
-$('cats').innerHTML=CATS_ALPHA.map(c=>`<label style="--c:${c.color}"><input type="radio" name="cat" value="${c.id}" ${c.id==='trabalhar'?'checked':''}><span><b></b>${c.label}</span></label>`).join('');
+// Pickers initialized lazily after app is shown (elements are in hidden div at load time)
+let pS,pE,pickersReady=false;
+function initPickers(){
+  if(pickersReady)return;
+  pickersReady=true;
+  pS=makeTimePicker($('pickStart'),updateDur);
+  pE=makeTimePicker($('pickEnd'),updateDur);
+  $('cats').innerHTML=CATS_ALPHA.map(c=>`<label style="--c:${c.color}"><input type="radio" name="cat" value="${c.id}" ${c.id==='trabalhar'?'checked':''}><span><b></b>${c.label}</span></label>`).join('');
+  // Wire sheet buttons
+  $('cancel').onclick=closeSheet;
+  $('scrim').onclick=closeSheet;
+  $('save').onclick=saveEntry;
+  $('del').onclick=delEntry;
+}
 let confirmOverlap=false;
 function span2(){let s=pS.get(),e=pE.get();if(e===0&&s>0)e=1440;return{s,e}}
 function updateDur(){
@@ -1215,11 +1228,11 @@ function openSheet(id,startAt){
   setTimeout(()=>$('save').focus({preventScroll:true}),50);
 }
 function closeSheet(){$('scrim').classList.remove('open');$('sheet').classList.remove('open');S.editing=null}
-$('cancel').onclick=closeSheet;$('scrim').onclick=closeSheet;
+
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('sheet').classList.contains('open'))closeSheet()});
 function genId(){return Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4)}
 function ensureDay(k){return S.days[k]||(S.days[k]={date:k,entries:[]})}
-$('save').onclick=()=>{
+function saveEntry(){
   const{s,e}=span2();if(e===s){$('warn').textContent='Escolha um horário de fim diferente do início.';return}
   const cat=document.querySelector('#cats input:checked').value,note=$('note').value.trim();
   const k=S.date,next=addDays(k,1);
@@ -1235,7 +1248,7 @@ $('save').onclick=()=>{
   if(S.editing)touched.add(k);
   touched.forEach(persist);closeSheet();render();
 };
-$('del').onclick=()=>{const d=ensureDay(S.date);d.entries=d.entries.filter(x=>x.id!==S.editing);persist(S.date);closeSheet();render()};
+function delEntry(){const d=ensureDay(S.date);d.entries=d.entries.filter(x=>x.id!==S.editing);persist(S.date);closeSheet();render()}
 
 /* ── NAV ── */
 function setTab(tab){
