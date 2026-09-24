@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carregar dados iniciais</title>
+<style>
+body{font-family:sans-serif;max-width:500px;margin:60px auto;padding:20px;text-align:center}
+h2{color:#2B5C4B}
+.btn{background:#2B5C4B;color:#fff;border:0;border-radius:10px;padding:14px 28px;font-size:16px;cursor:pointer;margin-top:20px}
+.status{margin-top:24px;font-size:15px;color:#555;line-height:1.6}
+.ok{color:#2B5C4B;font-weight:600}
+.err{color:#9C3A2A;font-weight:600}
+</style>
+</head>
+<body>
+<h2>Minhas Horas — Carregar dados iniciais</h2>
+<p>Clique no botão abaixo para carregar seus logs dos dias 22 e 23/09 no Firebase.</p>
+<button class="btn" id="btn">Carregar dados</button>
+<div class="status" id="status"></div>
+
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
+import{getAuth,signInWithPopup,GoogleAuthProvider}from'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
+import{getFirestore,doc,setDoc,collection}from'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+
+const firebaseConfig={
+  apiKey:"AIzaSyCTYasR_icUE33GhOsnscPxrta7vswH9lY",
+  authDomain:"minhas-horas-2170c.firebaseapp.com",
+  projectId:"minhas-horas-2170c",
+  storageBucket:"minhas-horas-2170c.firebasestorage.app",
+  messagingSenderId:"480944111329",
+  appId:"1:480944111329:web:4a8971974dcfee031841a0"
+};
+
+const SEED=[
+  {date:"2026-09-22",entries:[
+    {cat:"dormir",end:1440,id:"vc95i35jhcgq",note:"",start:1380},
+    {cat:"redes",end:1380,id:"zx15rm0eho85",note:"",start:1350},
+    {cat:"comer",end:1320,id:"lzxutyfyhwby",note:"",start:1290},
+    {cat:"estudar",end:1200,id:"lk93ki54k49k",note:"Claude",start:1080},
+    {cat:"cuidados",end:1230,id:"o3gaj37yn1xw",note:"",start:1200},
+    {cat:"estudar",end:1260,id:"j36gyoemnth1",note:"",start:1230}
+  ]},
+  {date:"2026-09-23",entries:[
+    {cat:"dormir",end:525,id:"3fg92i0l1bzt",note:"",start:0},
+    {cat:"cuidados",end:540,id:"ypmgzz8u1nsh",note:"",start:525},
+    {cat:"escrever",end:585,id:"80oqqw7s8ytg",note:"Escrita irmã graça",start:540},
+    {cat:"outros",end:600,id:"lolsp702afsh",note:"resolução de assuntos importantes no WhatsApp:\n- pagamento psiquiatra\n- solicitação docs para reembolso retirada do DIU\n- alinhamento Ana Paula sobre compras casinha\n- pagamento Rogério imagens preto velho\n- verificação Cartão de crédito + pagamento\n- alinhamento Tainá sobre artes grupo K",start:585},
+    {cat:"estudar",end:690,id:"2txc28g97b75",note:"Ajuste da configuração do Claude + revisão das aulas de ontem da Hashtag",start:600}
+  ]}
+];
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const status=document.getElementById('status');
+const btn=document.getElementById('btn');
+
+btn.onclick=async()=>{
+  btn.disabled=true;
+  status.innerHTML='Entrando com Google…';
+  try{
+    const result=await signInWithPopup(auth,new GoogleAuthProvider());
+    const uid=result.user.uid;
+    status.innerHTML='Salvando dados…';
+    for(const day of SEED){
+      await setDoc(doc(db,'users',uid,'days','d-'+day.date),day);
+      status.innerHTML+=`<br>✓ Dia ${day.date} salvo`;
+    }
+    status.innerHTML+=`<br><br><span class="ok">✓ Concluído! Abra o app agora.</span>`;
+  }catch(e){
+    status.innerHTML=`<span class="err">Erro: ${e.message}</span>`;
+    btn.disabled=false;
+    console.error(e);
+  }
+};
+</script>
+</body>
+</html>
