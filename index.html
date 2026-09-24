@@ -802,7 +802,7 @@ function generateInsights(k){
   if(hasData(p)&&focus>0&&focusPrev>0){
     const diff=focus-focusPrev;
     if(Math.abs(diff)>30){
-      items.push({icon:diff>0?'📊':'📊',text:`Foco ${diff>0?dur(diff)+' a mais':'dur(Math.abs(diff))+' a menos'} que ontem (${dur(focusPrev)}).`,type:diff>0?'good':'warn'});
+      const diffLabel=diff>0?dur(diff)+' a mais':dur(Math.abs(diff))+' a menos';items.push({icon:'📊',text:`Foco ${diffLabel} que ontem (${dur(focusPrev)}).`,type:diff>0?'good':'warn'});
     }
   }
 
