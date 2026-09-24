@@ -284,7 +284,7 @@ tr.total td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
 import{getAuth,signInWithPopup,GoogleAuthProvider,onAuthStateChanged,signOut}from'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-import{getFirestore,doc,collection,setDoc,getDoc,onSnapshot,query,orderBy,limit}from'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+import{getFirestore,doc,collection,setDoc,getDoc,onSnapshot,query,limit}from'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
 const firebaseConfig={
   apiKey:"AIzaSyCTYasR_icUE33GhOsnscPxrta7vswH9lY",
@@ -381,7 +381,7 @@ onAuthStateChanged(auth,async user=>{
     S.date=todayKey();
     try{const gs=await getDoc(doc(db,'users',S.uid,'meta','goals'));if(gs.exists())S.goals=gs.data()}catch(e){}
     if(unsubDays)unsubDays();
-    const q=query(userDaysCol(),orderBy('date','desc'),limit(500));
+    const q=query(userDaysCol(),limit(500));
     let firstSnap=true;
     unsubDays=onSnapshot(q,snap=>{
       const days={};
@@ -390,10 +390,12 @@ onAuthStateChanged(auth,async user=>{
       if(firstSnap){
         firstSnap=false;
         if(Object.keys(days).length===0){
+          // Bank empty — write seed data and show it immediately
           Object.values(SEED).forEach(day=>{
-            setDoc(doc(userDaysCol(),'d-'+day.date),JSON.parse(JSON.stringify(day))).catch(()=>{});
-            days[day.date]=day;
+            setDoc(doc(userDaysCol(),'d-'+day.date),JSON.parse(JSON.stringify(day))).catch(e=>console.warn('seed write error',e));
+            days[day.date]=JSON.parse(JSON.stringify(day));
           });
+          setSync('Dados iniciais carregados ✓');
         }
       }
       S.days=days;
