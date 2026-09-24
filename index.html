@@ -6,33 +6,36 @@
 <title>Minhas Horas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F5F5F0;
-  --bg2:#EEEEE9;
+  --bg:#F0EFF8;
+  --bg2:#E8E7F3;
   --surface:#FFFFFF;
-  --surface-2:#F2F2ED;
-  --surface-3:#E8E8E3;
-  --ink:#1A1A1A;
-  --ink-2:rgba(26,26,26,.7);
-  --muted:#888880;
-  --line:#E2E2DC;
-  --line2:#D0D0CA;
-  --accent:#2B6B4E;
-  --accent-2:#1F5239;
-  --accent-soft:rgba(43,107,78,.1);
+  --surface-2:#F4F3FB;
+  --surface-3:#ECEAF7;
+  --ink:#1A1730;
+  --ink-2:rgba(26,23,48,.68);
+  --muted:#8884A8;
+  --line:#E0DEEE;
+  --line2:#CCC9E4;
+  --accent:#6C5CE7;
+  --accent-2:#5449C4;
+  --accent-soft:rgba(108,92,231,.1);
   --accent-ink:#FFFFFF;
   --warn:#C0392B;
-  --warn-soft:rgba(192,57,43,.1);
-  --good:#2B6B4E;
-  --gold:#9A6F0A;
-  --gold-soft:rgba(154,111,10,.1);
-  --blue:#1A6BBF;
-  --blue-soft:rgba(26,107,191,.1);
-  --purple:#7B3FA0;
-  --serif:"Instrument Serif",Georgia,serif;
-  --sans:"Inter",system-ui,-apple-system,sans-serif;
+  --warn-soft:rgba(192,57,43,.09);
+  --good:#2D9E7A;
+  --good-soft:rgba(45,158,122,.1);
+  --gold:#C07A1A;
+  --gold-soft:rgba(192,122,26,.1);
+  --blue:#3B7DD8;
+  --blue-soft:rgba(59,125,216,.1);
+  --purple:#9B5DE5;
+  --comp:#F4A261;
+  --comp-soft:rgba(244,162,97,.12);
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --sans:"Figtree",system-ui,-apple-system,sans-serif;
   --hour:52px;
   --r:16px;
   --r-sm:10px;
@@ -56,15 +59,16 @@ button{cursor:pointer}
   min-height:100vh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:28px;
   padding:32px 16px;text-align:center;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(108,92,231,.13) 0%,transparent 70%);
 }
-.login-logo{font:italic 400 48px var(--serif);margin:0;letter-spacing:-.02em}
-.login-logo em{color:var(--accent);font-style:italic}
+.login-logo{font:italic 300 56px var(--serif);margin:0;letter-spacing:-.02em}
+.login-logo em{color:var(--accent);font-style:italic;letter-spacing:-.01em}
 .login-sub{color:var(--muted);margin:0;font-size:15px;max-width:300px;line-height:1.5}
 .google-btn{
   display:flex;align-items:center;gap:12px;
   background:var(--surface);border:1px solid var(--line2);border-radius:14px;
   padding:14px 28px;font:600 15px var(--sans);
-  box-shadow:0 4px 24px rgba(0,0,0,.4);
+  box-shadow:0 4px 20px rgba(108,92,231,.15),0 1px 4px rgba(26,23,48,.08);
   transition:background .15s,transform .1s;color:var(--ink);
 }
 .google-btn:hover{background:var(--surface-2);transform:translateY(-1px)}
@@ -74,7 +78,7 @@ button{cursor:pointer}
 /* ── HEADER ── */
 header.top{
   position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
-  background:rgba(245,245,240,.92);
+  background:rgba(240,239,248,.94);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-bottom:1px solid var(--line);padding:12px 0 0;
 }
@@ -127,12 +131,13 @@ section.view{padding-top:18px}
 .panel{
   background:var(--surface);border:1px solid var(--line);
   border-radius:var(--r);padding:18px;margin-bottom:14px;
+  box-shadow:0 1px 4px rgba(26,23,48,.04);
 }
 .panel-glass{
   background:rgba(28,28,30,.7);
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
-h2{font:italic 400 22px/1.2 var(--serif);margin:0 0 4px;letter-spacing:-.01em}
+h2{font:italic 300 26px/1.15 var(--serif);margin:0 0 4px;letter-spacing:-.02em}
 h3{
   font:600 11px/1.3 var(--sans);margin:0 0 14px;
   text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
@@ -142,7 +147,7 @@ h3{
 /* ── STICKY DAY SUMMARY ── */
 .day-sticky{
   position:sticky;top:var(--header-h,128px);z-index:10;
-  background:rgba(245,245,240,.95);
+  background:rgba(240,239,248,.97);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   padding-bottom:10px;margin-bottom:0;
 }
@@ -157,18 +162,20 @@ h3{
 .fill{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
 .big-num{font:italic 300 44px/1 var(--serif);letter-spacing:-.02em}
 .big-num span{font-size:17px;color:var(--muted);font-weight:300;font-family:var(--sans);font-style:normal}
-.strip{display:flex;height:5px;border-radius:3px;overflow:hidden;background:var(--surface-3);margin-bottom:14px;gap:1px}
+.strip{display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--surface-3);margin-bottom:14px;gap:1px}
 .strip i{display:block;height:100%;border-radius:1px}
 .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted)}
 .legend b{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:5px;vertical-align:-.5px}
 
 /* ── BUTTONS ── */
 .primary{
-  background:var(--accent);color:var(--accent-ink);border:0;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);
+  color:var(--accent-ink);border:0;
   border-radius:var(--r-sm);padding:12px 20px;
-  font:600 14px var(--sans);transition:background .14s,transform .1s;
+  font:600 14px var(--sans);transition:opacity .14s,transform .1s;
+  box-shadow:0 4px 14px rgba(108,92,231,.3);
 }
-.primary:hover{background:var(--accent-2);transform:translateY(-1px)}
+.primary:hover{opacity:.9;transform:translateY(-1px)}
 .ghost{
   background:var(--surface-2);border:1px solid var(--line2);
   border-radius:var(--r-sm);padding:11px 18px;
@@ -314,8 +321,15 @@ tr.total td{font-weight:700;border-bottom:0;border-top:2px solid var(--line2)}
 .kpi{
   background:var(--surface);border:1px solid var(--line);
   border-radius:14px;padding:14px 13px;
+  box-shadow:0 1px 4px rgba(26,23,48,.04);
+  position:relative;overflow:hidden;
 }
-.kpi .v{font:italic 300 28px/1.1 var(--serif)}
+.kpi::after{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--comp));
+  opacity:.6;
+}
+.kpi .v{font:italic 300 32px/1.1 var(--serif)}
 .kpi .k{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.3;letter-spacing:.01em}
 @media(max-width:400px){.kpi .v{font-size:22px}.kpis{gap:7px}}
 .chart svg{width:100%;height:auto;display:block}
@@ -323,12 +337,12 @@ tr.total td{font-weight:700;border-bottom:0;border-top:2px solid var(--line2)}
 
 /* ── INSIGHTS ── */
 .insight-block{
-  background:linear-gradient(135deg,rgba(43,107,78,.06) 0%,rgba(26,107,191,.04) 100%);
-  border:1px solid rgba(43,107,78,.2);border-radius:var(--r);padding:18px;margin-bottom:14px;
+  background:linear-gradient(135deg,rgba(108,92,231,.07) 0%,rgba(244,162,97,.05) 100%);
+  border:1px solid rgba(108,92,231,.2);border-radius:var(--r);padding:18px;margin-bottom:14px;
 }
 .insight-title{
   font:600 11px var(--sans);text-transform:uppercase;letter-spacing:.08em;
-  color:var(--accent);margin:0 0 14px;
+  color:var(--accent);margin:0 0 14px;font-style:italic;
 }
 .insight-item{
   display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);
@@ -352,7 +366,7 @@ tr.total td{font-weight:700;border-bottom:0;border-top:2px solid var(--line2)}
   transition:background .12s;
 }
 .goals-accordion-header:hover{background:var(--surface-2)}
-.goals-accordion-header h3{margin:0;font:600 13px var(--sans);color:var(--ink);text-transform:none;letter-spacing:0}
+.goals-accordion-header h3{margin:0;font:italic 400 17px var(--serif);color:var(--ink);text-transform:none;letter-spacing:-.01em}
 .goals-accordion-arrow{color:var(--muted);transition:transform .2s;font-size:13px}
 .goals-accordion-arrow.open{transform:rotate(180deg)}
 .goals-accordion-body{display:none;padding:0 18px 18px}
@@ -841,30 +855,45 @@ function renderDay(){
 
   // Merge sleep blocks visually if total > 3h
   const sleepBlocks=es.filter(e=>e.cat==='dormir');
-  const sleepTotal180=sleepBlocks.reduce((s,e)=>s+(e.end-e.start),0);
   const mergedSleepIds=new Set();
-  if(sleepTotal180>180&&sleepBlocks.length>1){
-    // Find the full span
+  {
     const allSleepEs=sleepBlocks.slice().sort((a,b)=>a.start-b.start);
-    // Include prev-night fragment if morning starts at 0
-    let displayStart=allSleepEs[0].start;
-    let displayEnd=allSleepEs[allSleepEs.length-1].end;
-    // If first block starts at 0, the real start is from previous night
-    if(allSleepEs[0].start===0){
-      const prevNightFrags=entries(addDays(k,-1)).filter(e=>e.cat==='dormir'&&e.end===1440);
-      if(prevNightFrags.length){displayStart=-prevNightFrags.reduce((s,e)=>s+(e.end-e.start),0)}
+    // Find the morning fragment (starts at 0) and the night fragment (ends at 1440)
+    const morningFrag=allSleepEs.find(e=>e.start===0);
+    const nightFrag=allSleepEs.find(e=>e.end===1440);
+    const prevNightFrags=entries(addDays(k,-1)).filter(e=>e.cat==='dormir'&&e.end===1440);
+    const prevNightMin=prevNightFrags.reduce((s,e)=>s+(e.end-e.start),0);
+    const thisDayMin=allSleepEs.reduce((s,e)=>s+(e.end-e.start),0);
+    const totalSleepMin=sleepTotalForDay(k);// correct total excl tonight
+
+    // Decide whether to merge:
+    // merge if sleep crosses midnight (morning frag exists + prev night exists) OR total > 3h
+    const shouldMerge=totalSleepMin>180||(morningFrag&&prevNightMin>0);
+
+    if(shouldMerge&&allSleepEs.length>0){
+      // Visual block: starts at 00:00, ends at the last morning fragment end
+      // (the night frag 23h-0h is on the NEXT day's concern, hide it here)
+      // Show only the morning portion on this day's grid (0 → morningEnd)
+      const displayStart=0; // always starts at top of day grid (00:00)
+      const displayEnd=morningFrag?morningFrag.end:(nightFrag?0:allSleepEs[allSleepEs.length-1].end);
+      // height = only the portion visible on THIS day's grid
+      const visibleMin=allSleepEs.filter(e=>e.end<=1439).reduce((s,e)=>s+(e.end-e.start),0);
+      const hgt=Math.max(visibleMin/60,.25);
+      const c=CAT.dormir;
+      // Mark all sleep entries on this day as merged (hide individual blocks)
+      allSleepEs.forEach(e=>mergedSleepIds.add(e.id));
+      // Label shows real sleep span: prev night start → morning end
+      const realStartMin=prevNightFrags.length?1440-prevNightMin:0;
+      const realStartLabel=prevNightMin>0?hm(realStartMin):'00:00';
+      const realEndLabel=morningFrag?hm(morningFrag.end):(nightFrag?'00:00':hm(allSleepEs[allSleepEs.length-1].end));
+      html+=`<button class="block sleep-merged" style="--c:${c.color};top:calc(var(--hour)*${displayStart} + 1px);height:calc(var(--hour)*${hgt} - 2px)"><span class="t">Dormir · ${realStartLabel}–${realEndLabel}</span><span class="n">${dur(totalSleepMin)} no total</span></button>`;
     }
-    allSleepEs.forEach(e=>mergedSleepIds.add(e.id));
-    const mergedMin=sleepTotalForDay(k);
-    const top2=Math.max(0,displayStart)/60;
-    const hgt=Math.max(mergedMin/60,.25);
-    const c=CAT.dormir;
-    const startLabel=displayStart<0?`00:00`:hm(displayStart);
-    html+=`<button class="block sleep-merged" style="--c:${c.color};top:calc(var(--hour)*${top2} + 1px);height:calc(var(--hour)*${hgt} - 2px)"><span class="t">Dormir · ${startLabel}–${hm(displayEnd===1440?1440:displayEnd)}</span><span class="n">${dur(mergedMin)} no total</span></button>`;
   }
 
   es.forEach(e=>{
     if(mergedSleepIds.has(e.id))return;
+    // Also hide night-crossing sleep frags (end=1440) when sleep is merged — they appear on next day
+    if(e.cat==='dormir'&&e.end===1440&&mergedSleepIds.size>0)return;
     const c=CAT[e.cat]||CAT.outros;
     const top2=e.start/60,hgt=Math.max((e.end-e.start)/60,.25);
     const short=(e.end-e.start)<45;
